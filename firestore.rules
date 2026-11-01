@@ -12,7 +12,8 @@ service cloud.firestore {
         && d.name is string && d.name.size() > 0 && d.name.size() <= 80
         && d.birthDate is string && d.birthDate.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
         && d.deathDate is string && (d.deathDate == '' || d.deathDate.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'))
-        && d.photoUrl is string && (d.photoUrl == '' || d.photoUrl.size() <= 2000)
+        && d.photoUrl is string
+        && (d.photoUrl == '' || d.photoUrl.matches('^data:image/.*') || d.photoUrl.matches('^https?://.*'))
         && d.type in ['root', 'child', 'spouse']
         && d.refId is string;
     }
