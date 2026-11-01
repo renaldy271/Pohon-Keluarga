@@ -1,0 +1,247 @@
+/* Pohon Keluarga
+   Nila (tinta batik) di atas kertas abu-hijau. Kunyit hanya untuk ikatan pasangan dan fokus. */
+
+:root {
+  --nila: #1b2547;
+  --nila-2: #3a4668;
+  --kertas: #eceff0;
+  --kanvas: #f4f6f2;
+  --kartu: #fbfcfa;
+  --garis: #c9cec6;
+  --kunyit: #e0a526;
+  --kunyit-tua: #b9820f;
+  --sirih: #2f6b57;
+  --bahaya: #b3321f;
+  --wafat-bg: #e3e5e2;
+  --wafat-garis: #c3c7c1;
+  --wafat-teks: #4b515d;
+  --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --sans: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--kertas);
+  color: var(--nila);
+  font: 400 16px/1.5 var(--sans);
+}
+
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--kunyit-tua); outline-offset: 2px; }
+
+/* ---------- Umum ---------- */
+
+.banner {
+  background: var(--kunyit);
+  color: var(--nila);
+  padding: 10px clamp(16px, 4vw, 48px);
+  font-size: 14px;
+}
+
+.site-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 28px clamp(16px, 4vw, 48px) 16px;
+}
+
+.site-title {
+  margin: 0;
+  font: 500 clamp(28px, 4vw, 40px)/1.1 var(--serif);
+  letter-spacing: -0.01em;
+}
+
+.site-sub { margin: 6px 0 0; color: var(--nila-2); }
+
+.site-foot {
+  padding: 16px clamp(16px, 4vw, 48px) 28px;
+  font-size: 14px;
+  color: var(--nila-2);
+}
+
+.btn {
+  font: 500 14px/1 var(--sans);
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--nila);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--nila);
+  cursor: pointer;
+}
+.btn:hover { background: rgba(27, 37, 71, 0.07); }
+.btn:disabled { opacity: 0.55; cursor: default; }
+.btn-primary { background: var(--nila); color: var(--kartu); }
+.btn-primary:hover { background: #2a3763; }
+.btn-danger { border-color: var(--bahaya); color: var(--bahaya); }
+.btn-danger:hover { background: rgba(179, 50, 31, 0.08); }
+.btn-small { min-height: 32px; padding: 0 12px; font-size: 13px; }
+
+.toolbar { display: flex; gap: 8px; }
+
+/* ---------- Pohon (halaman publik) ---------- */
+
+.viewport {
+  position: relative;
+  margin: 0 clamp(8px, 2vw, 24px);
+  height: 78vh;
+  height: calc(100dvh - 210px);
+  min-height: 420px;
+  overflow: auto;
+  background: var(--kanvas);
+  border: 1px solid var(--garis);
+  border-radius: 14px;
+}
+
+#sizer { position: relative; }
+#stage { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+#lines { position: absolute; left: 0; top: 0; overflow: visible; }
+
+#lines line { stroke: var(--nila-2); stroke-width: 1.5; stroke-linecap: square; }
+#lines line.couple { stroke: var(--kunyit); stroke-width: 4; stroke-linecap: butt; }
+
+.card {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: var(--kartu);
+  border: 1px solid var(--garis);
+  border-radius: 10px;
+}
+
+.card-name {
+  margin: 0;
+  font: 500 17px/1.2 var(--serif);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.card-age { margin: 0; display: flex; align-items: baseline; gap: 6px; }
+.age-num { font: 500 32px/1 var(--serif); font-variant-numeric: lining-nums; }
+.age-unit { font-size: 13px; color: var(--nila-2); }
+
+.card-dates { margin: 0; font-size: 12.5px; line-height: 1.4; color: var(--nila-2); }
+
+.card.is-deceased {
+  background: var(--wafat-bg);
+  border-color: var(--wafat-garis);
+  color: var(--wafat-teks);
+}
+.card.is-deceased .age-unit,
+.card.is-deceased .card-dates { color: var(--wafat-teks); }
+
+.empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+}
+.empty h2 { margin: 0; font: 500 24px/1.2 var(--serif); }
+.empty p { margin: 0; color: var(--nila-2); max-width: 44ch; }
+
+/* ---------- Admin ---------- */
+
+.admin-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 24px clamp(16px, 4vw, 48px) 8px;
+}
+.admin-head nav { display: flex; align-items: center; gap: 16px; font-size: 14px; }
+
+.admin main { padding: 16px clamp(16px, 4vw, 48px) 48px; }
+
+.panel, .login-card {
+  background: var(--kartu);
+  border: 1px solid var(--garis);
+  border-radius: 12px;
+  padding: 24px;
+}
+.panel h2, .login-card h2 { margin: 0 0 16px; font: 500 24px/1.2 var(--serif); }
+.panel h3 { margin: 24px 0 8px; font: 500 18px/1.2 var(--serif); }
+
+.login-card { max-width: 420px; margin: 24px auto; }
+.hint { margin: -8px 0 16px; color: var(--nila-2); font-size: 14px; }
+
+.app-grid {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.form-panel { position: sticky; top: 16px; }
+
+label { display: block; margin: 0 0 6px; font-size: 14px; font-weight: 500; }
+.field { margin-bottom: 16px; }
+.field small { display: block; margin-top: 4px; color: var(--nila-2); font-size: 13px; }
+
+input[type='text'], input[type='email'], input[type='password'], input[type='date'], select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  font: 400 16px/1.2 var(--sans);
+  color: var(--nila);
+  background: #fff;
+  border: 1px solid #aeb4ac;
+  border-radius: 8px;
+}
+#login-form label { margin-top: 12px; }
+
+.msg { min-height: 1.5em; margin: 8px 0; font-size: 14px; }
+.msg.error { color: var(--bahaya); }
+.msg.ok { color: var(--sirih); }
+
+.form-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.panel-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.panel-head h2 { margin: 0; }
+#demo-tools { display: flex; gap: 8px; }
+
+.member-list { list-style: none; margin: 0; padding: 0; }
+
+.member {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0 10px calc(var(--depth, 0) * 22px);
+  border-bottom: 1px solid var(--garis);
+}
+.member:last-child { border-bottom: 0; }
+.member-info { display: grid; min-width: 0; }
+.member-name { font: 500 17px/1.3 var(--serif); overflow-wrap: anywhere; }
+.member-rel { font-size: 13px; color: var(--nila-2); }
+.member-age { font-size: 14px; color: var(--nila-2); white-space: nowrap; }
+.member-actions { display: flex; gap: 6px; }
+.empty-row { padding: 16px 0; color: var(--nila-2); }
+
+@media (max-width: 860px) {
+  .app-grid { grid-template-columns: 1fr; }
+  .form-panel { position: static; }
+  .member { grid-template-columns: minmax(0, 1fr) auto; }
+  .member-age { grid-column: 1; grid-row: 2; }
+  .member-actions { grid-column: 2; grid-row: 1 / span 2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; transition: none !important; }
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pohon Keluarga</title>
+  <meta name="description" content="Silsilah keluarga dari kakek-nenek sampai cucu.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="demo-banner" class="banner" hidden>
+    Mode demo: data hanya tersimpan di browser ini. Hubungkan Firebase lewat js/config.js supaya semua orang melihat data yang sama.
+  </div>
+
+  <header class="site-head">
+    <div>
+      <h1 class="site-title" id="site-title">Pohon Keluarga</h1>
+      <p class="site-sub" id="site-sub"></p>
+    </div>
+    <div class="toolbar" role="group" aria-label="Zoom pohon">
+      <button class="btn" id="zoom-out" type="button" aria-label="Perkecil">−</button>
+      <button class="btn" id="zoom-fit" type="button">Pas layar</button>
+      <button class="btn" id="zoom-in" type="button" aria-label="Perbesar">+</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="viewport" id="viewport" tabindex="0" role="region" aria-label="Pohon keluarga">
+      <div id="sizer">
+        <div id="stage"><svg id="lines" aria-hidden="true"></svg></div>
+      </div>
+      <div class="empty" id="empty" hidden>
+        <h2 id="empty-title">Belum ada anggota keluarga</h2>
+        <p id="empty-text">Admin bisa menambahkan anggota pertama lewat halaman admin.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <a href="admin.html">Masuk sebagai admin</a>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/tree-logic.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/tree.js"></script>
+</body>
+</html>

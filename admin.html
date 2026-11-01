@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Admin · Pohon Keluarga</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin">
+  <div id="demo-banner" class="banner" hidden></div>
+
+  <header class="admin-head">
+    <h1 class="site-title">Admin pohon keluarga</h1>
+    <nav>
+      <a href="index.html">Lihat pohon</a>
+      <span id="who"></span>
+      <button class="btn btn-small" id="logout" type="button" hidden>Keluar</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="view-login" class="login-card" aria-labelledby="login-title">
+      <h2 id="login-title">Masuk</h2>
+      <p class="hint">Hanya admin yang bisa menambah, mengubah, atau menghapus anggota keluarga.</p>
+      <form id="login-form" novalidate>
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="username" required>
+        <label for="password">Kata sandi</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+        <p id="login-msg" class="msg error" role="alert"></p>
+        <button class="btn btn-primary" id="login-btn" type="submit">Masuk</button>
+      </form>
+    </section>
+
+    <div id="view-app" class="app-grid" hidden>
+      <section class="panel form-panel" aria-labelledby="form-title">
+        <h2 id="form-title">Tambah anggota</h2>
+        <form id="person-form" novalidate>
+          <div class="field">
+            <label for="f-name">Nama lengkap</label>
+            <input id="f-name" type="text" maxlength="80" autocomplete="off" required>
+          </div>
+          <div class="field">
+            <label for="f-birth">Tanggal lahir</label>
+            <input id="f-birth" type="date" required>
+          </div>
+          <div class="field">
+            <label for="f-death">Tanggal wafat</label>
+            <input id="f-death" type="date">
+            <small>Kosongkan jika masih hidup.</small>
+          </div>
+          <div class="field">
+            <label for="f-type">Posisi di pohon</label>
+            <select id="f-type">
+              <option value="root">Paling atas (tanpa orang tua di pohon)</option>
+              <option value="child">Anak dari…</option>
+              <option value="spouse">Pasangan dari…</option>
+            </select>
+          </div>
+          <div class="field" id="ref-wrap" hidden>
+            <label for="f-ref" id="ref-label">Anak dari</label>
+            <select id="f-ref"></select>
+          </div>
+          <p id="f-msg" class="msg" role="status" aria-live="polite"></p>
+          <div class="form-actions">
+            <button class="btn btn-primary" id="f-submit" type="submit">Tambah anggota</button>
+            <button class="btn" id="f-cancel" type="button" hidden>Batal</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel list-panel" aria-labelledby="list-title">
+        <div class="panel-head">
+          <h2 id="list-title">Anggota keluarga</h2>
+          <div id="demo-tools"></div>
+        </div>
+        <p id="list-msg" class="msg error" role="alert"></p>
+        <ul class="member-list" id="member-list"></ul>
+        <div id="orphans" hidden>
+          <h3>Perlu diperbaiki</h3>
+          <p class="hint">Anggota ini tidak muncul di pohon karena hubungan keluarganya tidak valid. Ubah atau hapus.</p>
+          <ul class="member-list" id="orphan-list"></ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/tree-logic.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
