@@ -28,6 +28,12 @@
     return n;
   }
 
+  function initials(name) {
+    return (name || '').trim().split(/\s+/).filter(Boolean).slice(0, 2).map(function (part) {
+      return part[0].toUpperCase();
+    }).join('') || 'K';
+  }
+
   function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
   function fitScale() {
@@ -48,14 +54,29 @@
     card.style.width = c.w + 'px';
     card.style.height = c.h + 'px';
 
+    var visual = el('div', 'card-visual');
+    if (c.person.photoUrl) {
+      var photo = document.createElement('img');
+      photo.className = 'card-photo';
+      photo.src = c.person.photoUrl;
+      photo.alt = 'Foto ' + c.person.name;
+      photo.loading = 'lazy';
+      visual.appendChild(photo);
+    } else {
+      var badge = el('div', 'card-badge', initials(c.person.name));
+      visual.appendChild(badge);
+    }
+    card.appendChild(visual);
+
+    var meta = el('div', 'card-meta');
     var name = el('h3', 'card-name', c.person.name);
     name.title = c.person.name;
-    card.appendChild(name);
+    meta.appendChild(name);
 
     var age = el('p', 'card-age');
     age.appendChild(el('span', 'age-num', i.age == null ? '?' : String(i.age)));
     age.appendChild(el('span', 'age-unit', i.deceased ? 'tahun saat wafat' : 'tahun'));
-    card.appendChild(age);
+    meta.appendChild(age);
 
     var dates = el('p', 'card-dates');
     dates.appendChild(document.createTextNode('Lahir ' + i.birth));
@@ -63,7 +84,8 @@
       dates.appendChild(document.createElement('br'));
       dates.appendChild(document.createTextNode('Wafat ' + i.death));
     }
-    card.appendChild(dates);
+    meta.appendChild(dates);
+    card.appendChild(meta);
     return card;
   }
 
@@ -118,7 +140,6 @@
     empty.hidden = false;
   });
 
-  // Umur dihitung dari tanggal hari ini. Kalau halaman dibiarkan terbuka lewat tengah malam, gambar ulang.
   setInterval(function () {
     var today = new Date().toDateString();
     if (today !== lastDay) { lastDay = today; render(); }

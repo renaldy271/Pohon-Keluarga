@@ -111,11 +111,44 @@ a { color: inherit; }
   position: absolute;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 12px 14px;
+  gap: 10px;
+  justify-content: flex-start;
+  padding: 10px 12px;
   background: var(--kartu);
   border: 1px solid var(--garis);
   border-radius: 10px;
+}
+
+.card-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto;
+}
+
+.card-photo,
+.card-badge {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #e5ddd1, #c7d5d1);
+  color: var(--nila);
+  font: 600 15px/1 var(--sans);
+  border: 2px solid rgba(27, 37, 71, 0.08);
+  box-shadow: 0 3px 10px rgba(27, 37, 71, 0.08);
+}
+
+.card-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  min-width: 0;
 }
 
 .card-name {
@@ -206,6 +239,17 @@ input[type='text'], input[type='email'], input[type='password'], input[type='dat
 }
 #login-form label { margin-top: 12px; }
 
+.photo-preview {
+  display: block;
+  width: 80px;
+  height: 80px;
+  margin-top: 10px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid rgba(27, 37, 71, 0.08);
+  box-shadow: 0 4px 12px rgba(27, 37, 71, 0.08);
+}
+
 .msg { min-height: 1.5em; margin: 8px 0; font-size: 14px; }
 .msg.error { color: var(--bahaya); }
 .msg.ok { color: var(--sirih); }
@@ -220,13 +264,29 @@ input[type='text'], input[type='email'], input[type='password'], input[type='dat
 
 .member {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: 42px minmax(0, 1fr) auto auto;
   align-items: center;
   gap: 12px;
   padding: 10px 0 10px calc(var(--depth, 0) * 22px);
   border-bottom: 1px solid var(--garis);
 }
 .member:last-child { border-bottom: 0; }
+.member-avatar-wrap { display: flex; align-items: center; justify-content: center; }
+.member-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  border: 1px solid rgba(27, 37, 71, 0.08);
+}
+.member-avatar.placeholder {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #f1e6d2, #d7ddd6);
+  color: var(--nila);
+  font: 600 13px/1 var(--sans);
+}
 .member-info { display: grid; min-width: 0; }
 .member-name { font: 500 17px/1.3 var(--serif); overflow-wrap: anywhere; }
 .member-rel { font-size: 13px; color: var(--nila-2); }
@@ -237,7 +297,7 @@ input[type='text'], input[type='email'], input[type='password'], input[type='dat
 @media (max-width: 860px) {
   .app-grid { grid-template-columns: 1fr; }
   .form-panel { position: static; }
-  .member { grid-template-columns: minmax(0, 1fr) auto; }
+  .member { grid-template-columns: 42px minmax(0, 1fr) auto; }
   .member-age { grid-column: 1; grid-row: 2; }
   .member-actions { grid-column: 2; grid-row: 1 / span 2; }
 }

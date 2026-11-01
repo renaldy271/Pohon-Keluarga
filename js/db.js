@@ -14,6 +14,7 @@
       name: String(p.name || '').trim(),
       birthDate: p.birthDate || '',
       deathDate: p.deathDate || '',
+      photoUrl: p.photoUrl || '',
       type: p.type || 'root',
       refId: p.type === 'root' ? '' : (p.refId || '')
     };

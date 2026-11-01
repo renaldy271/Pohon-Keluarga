@@ -44,6 +44,19 @@
             <label for="f-name">Nama lengkap</label>
             <input id="f-name" type="text" maxlength="80" autocomplete="off" required>
           </div>
+
+          <div class="field">
+            <label for="f-photo-url">Foto anggota</label>
+            <input id="f-photo-url" type="text" maxlength="500" placeholder="https://...jpg atau data URL">
+          </div>
+
+          <div class="field">
+            <label for="f-photo-file">Upload foto</label>
+            <input id="f-photo-file" type="file" accept="image/*">
+            <small>Opsional. Bisa pakai link URL atau upload foto lokal.</small>
+            <img id="photo-preview" class="photo-preview" alt="Preview foto anggota" hidden>
+          </div>
+
           <div class="field">
             <label for="f-birth">Tanggal lahir</label>
             <input id="f-birth" type="date" required>

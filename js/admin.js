@@ -12,6 +12,7 @@
   var f = {
     form: $('person-form'), name: $('f-name'), birth: $('f-birth'), death: $('f-death'),
     type: $('f-type'), refWrap: $('ref-wrap'), refLabel: $('ref-label'), ref: $('f-ref'),
+    photoUrl: $('f-photo-url'), photoFile: $('f-photo-file'), photoPreview: $('photo-preview'),
     title: $('form-title'), submit: $('f-submit'), cancel: $('f-cancel'), msg: $('f-msg')
   };
 
@@ -20,6 +21,16 @@
     if (cls) n.className = cls;
     if (text != null) n.textContent = text;
     return n;
+  }
+
+  function setPhotoPreview(url) {
+    if (!url) {
+      f.photoPreview.hidden = true;
+      f.photoPreview.removeAttribute('src');
+      return;
+    }
+    f.photoPreview.src = url;
+    f.photoPreview.hidden = false;
   }
 
   function todayISO() {
@@ -94,6 +105,26 @@
   function buildRow(p, depth, label) {
     var li = el('li', 'member');
     li.style.setProperty('--depth', depth);
+
+    var avatarWrap = el('div', 'member-avatar-wrap');
+    var avatar = document.createElement('img');
+    if (p.photoUrl) {
+      avatar.className = 'member-avatar';
+      avatar.src = p.photoUrl;
+      avatar.alt = 'Foto ' + p.name;
+      avatar.loading = 'lazy';
+    } else {
+      avatar.className = 'member-avatar placeholder';
+      avatar.alt = 'Foto ' + p.name;
+      avatar.textContent = '';
+      avatar.setAttribute('data-initials', (p.name || '').trim().split(/\s+/).filter(Boolean).slice(0, 2).map(function (part) { return part[0].toUpperCase(); }).join('') || 'K');
+    }
+    if (!p.photoUrl) {
+      avatar.textContent = (p.name || '').trim().split(/\s+/).filter(Boolean).slice(0, 2).map(function (part) { return part[0].toUpperCase(); }).join('') || 'K';
+      avatar.classList.add('placeholder');
+    }
+    avatarWrap.appendChild(avatar);
+    li.appendChild(avatarWrap);
 
     var info = el('div', 'member-info');
     info.appendChild(el('strong', 'member-name', p.name));
@@ -189,6 +220,9 @@
     f.name.value = '';
     f.birth.value = '';
     f.death.value = '';
+    f.photoUrl.value = '';
+    f.photoFile.value = '';
+    setPhotoPreview('');
     f.title.textContent = 'Tambah anggota';
     f.submit.textContent = 'Tambah anggota';
     f.cancel.hidden = true;
@@ -201,6 +235,8 @@
     f.name.value = p.name || '';
     f.birth.value = p.birthDate || '';
     f.death.value = p.deathDate || '';
+    f.photoUrl.value = p.photoUrl || '';
+    setPhotoPreview(p.photoUrl || '');
     f.type.value = p.type || 'root';
     refreshRefOptions();
     if (p.type !== 'root') f.ref.value = p.refId || '';
@@ -213,6 +249,36 @@
   }
 
   f.cancel.addEventListener('click', function () { resetForm(); });
+
+  f.photoFile.addEventListener('change', function () {
+    var file = this.files && this.files[0];
+    if (!file) return;
+    if (!file.type || !file.type.startsWith('image/')) {
+      setMsg('File yang dipilih harus berupa gambar.', 'error');
+      this.value = '';
+      return;
+    }
+    if (file.size > 4 * 1024 * 1024) {
+      setMsg('Ukuran foto maksimal 4 MB.', 'error');
+      this.value = '';
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function () {
+      var result = reader.result;
+      f.photoUrl.value = result;
+      setPhotoPreview(result);
+      setMsg('Foto siap disimpan.', 'ok');
+    };
+    reader.onerror = function () {
+      setMsg('Foto tidak bisa dibaca. Coba file lain.', 'error');
+    };
+    reader.readAsDataURL(file);
+  });
+
+  f.photoUrl.addEventListener('input', function () {
+    setPhotoPreview(this.value.trim());
+  });
 
   function saveError(e) {
     var c = (e && e.code) || '';
@@ -230,6 +296,7 @@
       name: f.name.value.trim(),
       birthDate: f.birth.value,
       deathDate: f.death.value,
+      photoUrl: f.photoUrl.value.trim(),
       type: type,
       refId: type === 'root' ? '' : f.ref.value
     };
@@ -245,10 +312,12 @@
           resetForm(true);
           setMsg('Perubahan disimpan.', 'ok');
         } else {
-          // Nama dan tanggal dikosongkan, posisi di pohon dipertahankan supaya mudah menambah saudara.
           f.name.value = '';
           f.birth.value = '';
           f.death.value = '';
+          f.photoUrl.value = '';
+          f.photoFile.value = '';
+          setPhotoPreview('');
           setMsg('Anggota ditambahkan.', 'ok');
           f.name.focus();
         }
