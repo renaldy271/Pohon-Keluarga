@@ -46,9 +46,15 @@
           </div>
 
           <div class="field">
-            <label for="f-photo-url">Foto anggota (URL)</label>
+            <label for="f-photo-url">Foto anggota (URL opsional)</label>
             <input id="f-photo-url" type="url" maxlength="500" placeholder="https://...jpg" autocomplete="off">
-            <small>Pakailah URL foto dari layanan seperti ImgBB, Google Drive publik, atau upload lain yang bisa diakses publik.</small>
+            <small>Bisa pakai link foto publik.</small>
+          </div>
+
+          <div class="field">
+            <label for="f-photo-file">Upload foto</label>
+            <input id="f-photo-file" type="file" accept="image/*">
+            <small>Opsional. Kalau foto diupload, sistem akan otomatis mengubahnya jadi data URL.</small>
             <img id="photo-preview" class="photo-preview" alt="Preview foto anggota" hidden>
           </div>
 
